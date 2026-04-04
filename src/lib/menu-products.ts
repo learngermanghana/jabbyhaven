@@ -1,3 +1,4 @@
+import "server-only";
 import { menuCatalog } from "@/data/menu-catalog";
 import { MenuItem } from "@/types/menu";
 
