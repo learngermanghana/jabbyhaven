@@ -5,12 +5,22 @@ const DEFAULT_STORE_ID = "c5q9ze32D4TbLoaPHpG2mFOXuOo2";
 
 type SedifexProduct = {
   id?: string;
+  _id?: string;
+  productId?: string;
   storeId?: string;
   name?: string;
+  productName?: string;
+  title?: string;
   price?: number | string;
+  unitPrice?: number | string;
   stockCount?: number;
+  stock?: number;
+  quantity?: number;
   itemType?: string;
+  category?: string;
   imageUrl?: string;
+  image?: string;
+  imageURL?: string;
   imageAlt?: string;
   updatedAt?: string;
 };
@@ -29,24 +39,29 @@ function dedupeProducts(items: MenuItem[]) {
 }
 
 function normalizeProduct(item: SedifexProduct, storeId: string): MenuItem | null {
-  if (!item.id || !item.name) {
+  const id = item.id ?? item._id ?? item.productId;
+  const name = item.name ?? item.productName ?? item.title;
+
+  if (!id || !name) {
     return null;
   }
 
-  const numericPrice = typeof item.price === "number" ? item.price : Number(item.price ?? 0);
-  const category = item.itemType?.trim() || "Uncategorized";
-  const stockCount = Math.max(item.stockCount ?? 0, 0);
+  const rawPrice = item.price ?? item.unitPrice ?? 0;
+  const numericPrice = typeof rawPrice === "number" ? rawPrice : Number(rawPrice);
+  const category = item.itemType?.trim() || item.category?.trim() || "Uncategorized";
+  const stockCount = Math.max(item.stockCount ?? item.stock ?? item.quantity ?? 0, 0);
+  const imageUrl = item.imageUrl ?? item.imageURL ?? item.image;
 
   return {
-    id: item.id,
+    id,
     storeId: item.storeId ?? storeId,
-    name: item.name,
+    name,
     price: Number.isFinite(numericPrice) ? numericPrice : 0,
     stockCount,
     itemType: item.itemType,
     category,
-    image: item.imageUrl || "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: item.imageAlt || item.name,
+    image: imageUrl || "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: item.imageAlt || name,
     description: `${category} item from Jabby's Sedifex catalog`,
     available: stockCount > 0,
     isService: category.toLowerCase() === "service",
@@ -87,6 +102,8 @@ async function fetchSedifexProducts(storeId: string): Promise<SedifexProduct[]> 
   if (Array.isArray(payload)) return payload as SedifexProduct[];
   if (Array.isArray(payload?.products)) return payload.products as SedifexProduct[];
   if (Array.isArray(payload?.data)) return payload.data as SedifexProduct[];
+  if (Array.isArray(payload?.items)) return payload.items as SedifexProduct[];
+  if (Array.isArray(payload?.result)) return payload.result as SedifexProduct[];
 
   return [];
 }
@@ -103,7 +120,8 @@ export async function getMenuProducts(storeId = DEFAULT_STORE_ID): Promise<MenuI
     }
 
     return dedupeProducts(normalized);
-  } catch {
+  } catch (error) {
+    console.error("Failed to load Sedifex products. Falling back to local menu catalog.", error);
     return menuCatalog;
   }
 }
