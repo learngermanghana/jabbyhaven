@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { menuCatalog } from "@/data/menu-catalog";
 import { StorePromo } from "@/lib/promo";
+import { MenuItem } from "@/types/menu";
 
 export function HeroSection() {
   return (
@@ -22,15 +23,59 @@ export function HeroSection() {
   );
 }
 
-export function FeaturedProducts() {
+type FeaturedProductsProps = {
+  items?: MenuItem[];
+};
+
+function pickFeaturedByCategory(items: MenuItem[], limit = 6) {
+  const grouped = items.reduce<Record<string, MenuItem[]>>((acc, item) => {
+    const key = item.category?.trim() || "Uncategorized";
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(item);
+    return acc;
+  }, {});
+
+  const categories = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
+  const featured: MenuItem[] = [];
+  let index = 0;
+
+  while (featured.length < limit && categories.length > 0) {
+    const category = categories[index % categories.length];
+    const nextItem = grouped[category]?.shift();
+
+    if (nextItem) {
+      featured.push(nextItem);
+    }
+
+    if (grouped[category]?.length === 0) {
+      delete grouped[category];
+      categories.splice(index % categories.length, 1);
+      if (categories.length === 0) break;
+      continue;
+    }
+
+    index += 1;
+  }
+
+  return featured;
+}
+
+export function FeaturedProducts({ items = menuCatalog }: FeaturedProductsProps) {
+  const featuredItems = pickFeaturedByCategory(items);
+
   return (
     <section className="card">
       <h2 className="section-title">Chef’s Highlights</h2>
       <div className="grid-3">
-        {menuCatalog.slice(0, 3).map((item) => (
+        {featuredItems.map((item) => (
           <article key={item.id}>
             <img src={item.image} alt={item.name} width={260} height={180} />
             <h3>{item.name}</h3>
+            <p>
+              <strong>{item.category || "Uncategorized"}</strong>
+            </p>
             <p className="lead">{item.description}</p>
           </article>
         ))}
