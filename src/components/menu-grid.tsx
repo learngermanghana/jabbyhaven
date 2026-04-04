@@ -47,6 +47,13 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
     }, {});
   }, [filtered]);
 
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("en-GH", {
+      style: "currency",
+      currency: "GHS",
+      minimumFractionDigits: 2
+    }).format(price);
+
   return (
     <section className="page-grid">
       <div className="card">
@@ -92,7 +99,7 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
                 <img src={item.image} alt={item.imageAlt || item.name} width={260} height={180} />
                 <h3>{item.name}</h3>
                 <p>
-                  <strong>${item.price}</strong>
+                  <strong>{formatPrice(item.price)}</strong>
                   {typeof item.stockCount === "number" ? ` · ${item.stockCount} left` : ""}
                 </p>
                 <p className="lead">{item.description}</p>
