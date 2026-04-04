@@ -14,7 +14,7 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
   const [dietary, setDietary] = useState("all");
   const [sortBy, setSortBy] = useState("popularity");
 
-  const categories = ["all", ...new Set(items.map((item) => item.category))];
+  const categories = ["all", ...new Set(items.map((item) => item.category || "Uncategorized"))];
   const dietaryOptions = ["all", "vegan", "vegetarian", "halal", "gluten-free"];
 
   const filtered = useMemo(() => {
@@ -38,11 +38,13 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
 
   const grouped = useMemo(() => {
     return filtered.reduce<Record<string, MenuItem[]>>((acc, item) => {
-      if (!acc[item.category]) {
-        acc[item.category] = [];
+      const group = item.category || "Uncategorized";
+
+      if (!acc[group]) {
+        acc[group] = [];
       }
 
-      acc[item.category].push(item);
+      acc[group].push(item);
       return acc;
     }, {});
   }, [filtered]);
@@ -100,7 +102,7 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
                 <h3>{item.name}</h3>
                 <p>
                   <strong>{formatPrice(item.price)}</strong>
-                  {typeof item.stockCount === "number" ? ` · ${item.stockCount} left` : ""}
+                  {typeof item.stockCount === "number" && item.stockCount > 0 ? ` · ${item.stockCount} left` : ""}
                 </p>
                 <p className="lead">{item.description}</p>
               </article>

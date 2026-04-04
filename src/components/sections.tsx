@@ -102,6 +102,30 @@ export function GalleryPreview() {
   );
 }
 
+
+const services = [
+  "Event catering and buffet services",
+  "Food and pastry packs",
+  "Corporate lunch services",
+  "Cakes for all occasions (birthday, wedding and anniversary celebrations)",
+  "Freshly squeezed juice and juice station services",
+  "Kebabs and live grill stations",
+  "Local bar and local pastries (set up services available)"
+];
+
+export function ServicesSection() {
+  return (
+    <section className="card">
+      <h2 className="section-title">Our Services</h2>
+      <ul>
+        {services.map((service) => (
+          <li key={service}>{service}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export function TestimonialsSection() {
   return (
     <section className="card">

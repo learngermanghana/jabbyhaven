@@ -24,6 +24,14 @@ export default function ContactPage() {
           </a>
         </article>
       </div>
+
+      <article className="card">
+        <h2>Find Us</h2>
+        <p className="lead">Use the map below for directions to Jabby's Haven.</p>
+        <a className="button" href="https://maps.app.goo.gl/Aj9W2Ymf3w9sF5g16?g_st=iw" target="_blank" rel="noreferrer">
+          Open Map Location
+        </a>
+      </article>
     </section>
   );
 }

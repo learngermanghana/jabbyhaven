@@ -64,7 +64,7 @@ function normalizeProduct(item: SedifexProduct, storeId: string): MenuItem | nul
     category,
     image: imageUrl || "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80",
     imageAlt: item.imageAlt || name,
-    description: item.description?.trim() || `${category} item from Jabby's Sedifex catalog`,
+    description: item.description?.trim() || "Freshly prepared selection from Jabby's Haven.",
     available: stockCount > 0,
     isService: category.toLowerCase() === "service",
     updatedAt: item.updatedAt,
