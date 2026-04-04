@@ -3,7 +3,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
-const coreNav = ["Home", "Menu", "Gallery", "Contact"];
+const coreNav = ["Home", "Menu", "Gallery", "About", "Contact"];
 
 export const metadata = {
   metadataBase: new URL(siteConfig.baseUrl),

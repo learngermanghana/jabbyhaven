@@ -5,7 +5,8 @@ import {
   GalleryPreview,
   HeroSection,
   PromoSection,
-  TestimonialsSection
+  TestimonialsSection,
+  ServicesSection
 } from "@/components/sections";
 import { getMenuProducts } from "@/lib/menu-products";
 import { getStorePromo } from "@/lib/promo";
@@ -19,6 +20,7 @@ export default async function HomePage() {
       <PromoSection promo={promo} />
       <FeaturedProducts items={products} />
       <GalleryPreview />
+      <ServicesSection />
       <TestimonialsSection />
       <FAQPreview />
       <CTASection />
