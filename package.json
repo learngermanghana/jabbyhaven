@@ -2,6 +2,9 @@
   "name": "jabbyhaven",
   "private": true,
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "echo 'lint placeholder'",
     "typecheck": "tsc --noEmit"
   },
