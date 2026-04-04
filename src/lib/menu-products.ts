@@ -58,13 +58,14 @@ function normalizeProduct(item: SedifexProduct, storeId: string): MenuItem | nul
 async function fetchSedifexProducts(storeId: string): Promise<SedifexProduct[]> {
   const directUrl = process.env.SEDIFEX_PRODUCTS_URL;
   const apiBaseUrl = process.env.SEDIFEX_API_BASE_URL;
-  const apiKey = process.env.SEDIFEX_API_KEY ?? process.env.SEDIFEX_FIRE_SECRET;
+  const apiKey =
+    process.env.SEDIFEX_INTEGRATION_KEY ?? process.env.SEDIFEX_API_KEY ?? process.env.SEDIFEX_FIRE_SECRET;
 
-  const url =
-    directUrl ??
-    (apiBaseUrl
-      ? `${apiBaseUrl.replace(/\/$/, "")}/stores/${storeId}/products`
-      : null);
+  const url = directUrl
+    ? directUrl
+    : apiBaseUrl
+      ? `${apiBaseUrl.replace(/\/$/, "")}/integrationProducts?storeId=${encodeURIComponent(storeId)}`
+      : null;
 
   if (!url) {
     return [];
