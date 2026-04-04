@@ -14,9 +14,10 @@ export function MenuGrid() {
 
   const filtered = useMemo(() => {
     return menuCatalog
-      .filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.description.toLowerCase().includes(search.toLowerCase())
+      .filter(
+        (item) =>
+          item.name.toLowerCase().includes(search.toLowerCase()) ||
+          item.description.toLowerCase().includes(search.toLowerCase())
       )
       .filter((item) => category === "all" || item.category === category)
       .filter((item) => {
@@ -31,35 +32,48 @@ export function MenuGrid() {
   }, [category, dietary, search, sortBy]);
 
   return (
-    <section>
-      <h1>Menu</h1>
-      <input placeholder="Search dishes" value={search} onChange={(e) => setSearch(e.target.value)} />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        {categories.map((value) => (
-          <option key={value} value={value}>
-            {value}
-          </option>
-        ))}
-      </select>
-      <select value={dietary} onChange={(e) => setDietary(e.target.value)}>
-        {dietaryOptions.map((value) => (
-          <option key={value} value={value}>
-            {value}
-          </option>
-        ))}
-      </select>
-      <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-        <option value="popularity">popularity</option>
-        <option value="price">price</option>
-      </select>
+    <section className="page-grid">
+      <div className="card">
+        <h1>Our Menu</h1>
+        <p className="lead">Browse signature meals, sides, and drinks curated for every appetite.</p>
+      </div>
 
-      <div>
+      <div className="card grid-2">
+        <input
+          className="field"
+          placeholder="Search dishes"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select className="select" value={category} onChange={(e) => setCategory(e.target.value)}>
+          {categories.map((value) => (
+            <option key={value} value={value}>
+              {value}
+            </option>
+          ))}
+        </select>
+        <select className="select" value={dietary} onChange={(e) => setDietary(e.target.value)}>
+          {dietaryOptions.map((value) => (
+            <option key={value} value={value}>
+              {value}
+            </option>
+          ))}
+        </select>
+        <select className="select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="popularity">popularity</option>
+          <option value="price">price</option>
+        </select>
+      </div>
+
+      <div className="grid-3">
         {filtered.map((item) => (
-          <article key={item.id}>
+          <article className="card" key={item.id}>
             <img src={item.image} alt={item.name} width={260} height={180} />
             <h3>{item.name}</h3>
-            <p>${item.price}</p>
-            <p>{item.description}</p>
+            <p>
+              <strong>${item.price}</strong>
+            </p>
+            <p className="lead">{item.description}</p>
           </article>
         ))}
       </div>
