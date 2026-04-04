@@ -2,8 +2,8 @@ export const siteConfig = {
   name: "Jabby’s Haven",
   description:
     "A cozy and authentic dining experience with delicious meals you’ll love.",
-  phone: "0248281878",
-  whatsapp: "0248281878",
+  phone: "0552516143",
+  whatsapp: "0552516143",
   email: "jabbyshaven@gmail.com",
   baseUrl: "https://your-domain.com",
   socialLinks: {

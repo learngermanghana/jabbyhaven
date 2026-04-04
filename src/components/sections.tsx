@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { menuCatalog } from "@/data/menu-catalog";
+import { StorePromo } from "@/lib/promo";
 
 export function HeroSection() {
   return (
@@ -89,6 +90,49 @@ export function CTASection() {
         <Link className="button" href="/menu">
           Order Favorites
         </Link>
+      </div>
+    </section>
+  );
+}
+
+type PromoSectionProps = {
+  promo: StorePromo | null;
+};
+
+function formatDate(value?: string) {
+  if (!value) return "";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+
+  return new Intl.DateTimeFormat("en-GH", {
+    dateStyle: "medium"
+  }).format(parsed);
+}
+
+export function PromoSection({ promo }: PromoSectionProps) {
+  if (!promo) {
+    return null;
+  }
+
+  const period = [formatDate(promo.promoStartDate), formatDate(promo.promoEndDate)].filter(Boolean).join(" - ");
+  const promoLink = promo.promoWebsiteUrl || `/promo/${promo.promoSlug || ""}`;
+  const promoImage =
+    promo.promoImageUrl ||
+    "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80";
+
+  return (
+    <section className="card">
+      <h2 className="section-title">Current Promo</h2>
+      <div className="grid-2">
+        <img src={promoImage} alt={promo.promoTitle} width={360} height={240} />
+        <article>
+          <h3>{promo.promoTitle}</h3>
+          <p className="lead">{promo.promoSummary}</p>
+          {period ? <p>{period}</p> : null}
+          <Link className="button" href={promoLink}>
+            View Promo
+          </Link>
+        </article>
       </div>
     </section>
   );
