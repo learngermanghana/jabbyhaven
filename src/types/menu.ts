@@ -17,4 +17,10 @@ export type MenuItem = {
   isVegan?: boolean;
   dietaryTags?: string[];
   course?: Course;
+  storeId?: string;
+  stockCount?: number;
+  itemType?: string;
+  imageAlt?: string;
+  updatedAt?: string;
+  isService?: boolean;
 };

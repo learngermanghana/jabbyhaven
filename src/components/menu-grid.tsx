@@ -2,18 +2,23 @@
 
 import { useMemo, useState } from "react";
 import { menuCatalog } from "@/data/menu-catalog";
+import { MenuItem } from "@/types/menu";
 
-export function MenuGrid() {
+type MenuGridProps = {
+  items?: MenuItem[];
+};
+
+export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [dietary, setDietary] = useState("all");
   const [sortBy, setSortBy] = useState("popularity");
 
-  const categories = ["all", ...new Set(menuCatalog.map((item) => item.category))];
+  const categories = ["all", ...new Set(items.map((item) => item.category))];
   const dietaryOptions = ["all", "vegan", "vegetarian", "halal", "gluten-free"];
 
   const filtered = useMemo(() => {
-    return menuCatalog
+    return items
       .filter(
         (item) =>
           item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -29,7 +34,18 @@ export function MenuGrid() {
         if (sortBy === "price") return a.price - b.price;
         return (b.popularity ?? 0) - (a.popularity ?? 0);
       });
-  }, [category, dietary, search, sortBy]);
+  }, [category, dietary, items, search, sortBy]);
+
+  const grouped = useMemo(() => {
+    return filtered.reduce<Record<string, MenuItem[]>>((acc, item) => {
+      if (!acc[item.category]) {
+        acc[item.category] = [];
+      }
+
+      acc[item.category].push(item);
+      return acc;
+    }, {});
+  }, [filtered]);
 
   return (
     <section className="page-grid">
@@ -65,18 +81,26 @@ export function MenuGrid() {
         </select>
       </div>
 
-      <div className="grid-3">
-        {filtered.map((item) => (
-          <article className="card" key={item.id}>
-            <img src={item.image} alt={item.name} width={260} height={180} />
-            <h3>{item.name}</h3>
-            <p>
-              <strong>${item.price}</strong>
-            </p>
-            <p className="lead">{item.description}</p>
-          </article>
-        ))}
-      </div>
+      {Object.entries(grouped).map(([group, groupItems]) => (
+        <div key={group} className="page-grid">
+          <div className="card">
+            <h2>{group}</h2>
+          </div>
+          <div className="grid-3">
+            {groupItems.map((item) => (
+              <article className="card" key={`${item.storeId ?? "local"}-${item.id}`}>
+                <img src={item.image} alt={item.imageAlt || item.name} width={260} height={180} />
+                <h3>{item.name}</h3>
+                <p>
+                  <strong>${item.price}</strong>
+                  {typeof item.stockCount === "number" ? ` · ${item.stockCount} left` : ""}
+                </p>
+                <p className="lead">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }
