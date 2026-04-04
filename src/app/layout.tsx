@@ -1,5 +1,9 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+import Link from "next/link";
 import { siteConfig } from "@/config/site";
+import "./globals.css";
+
+const coreNav = ["Home", "Menu", "Gallery", "Contact"];
 
 export const metadata = {
   metadataBase: new URL(siteConfig.baseUrl),
@@ -11,22 +15,33 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <header>
-          <strong>{siteConfig.name}</strong>
-          <nav>
-            {siteConfig.nav.map((item) => (
-              <a key={item} href={item === "Home" ? "/" : `/${item.toLowerCase()}`}>
-                {item}
-              </a>
-            ))}
-          </nav>
-          <a href={`https://wa.me/${siteConfig.whatsapp}`}>WhatsApp</a>
+        <header className="site-header">
+          <div className="container header-inner">
+            <Link className="brand" href="/">
+              {siteConfig.name}
+            </Link>
+            <nav className="nav-list">
+              {coreNav.map((item) => (
+                <Link key={item} href={item === "Home" ? "/" : `/${item.toLowerCase()}`}>
+                  {item}
+                </Link>
+              ))}
+            </nav>
+            <a className="whatsapp-link" href={`https://wa.me/${siteConfig.whatsapp}`}>
+              WhatsApp
+            </a>
+          </div>
         </header>
-        {children}
+
+        <main className="main-content container">{children}</main>
+
         <footer>
-          <p>{siteConfig.description}</p>
-          <p>{siteConfig.phone}</p>
-          <p>{siteConfig.email}</p>
+          <div className="container footer-inner">
+            <strong>{siteConfig.name}</strong>
+            <p>{siteConfig.description}</p>
+            <p>{siteConfig.phone}</p>
+            <p>{siteConfig.email}</p>
+          </div>
         </footer>
       </body>
     </html>

@@ -9,13 +9,13 @@ import {
 
 export default function HomePage() {
   return (
-    <main>
+    <div className="page-grid">
       <HeroSection />
       <FeaturedProducts />
       <GalleryPreview />
       <TestimonialsSection />
       <FAQPreview />
       <CTASection />
-    </main>
+    </div>
   );
 }
