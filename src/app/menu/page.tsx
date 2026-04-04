@@ -1,5 +1,10 @@
 import { MenuGrid } from "@/components/menu-grid";
+import { getMenuProducts } from "@/lib/menu-products";
 
-export default function MenuPage() {
-  return <MenuGrid />;
+export const revalidate = 60;
+
+export default async function MenuPage() {
+  const products = await getMenuProducts();
+
+  return <MenuGrid items={products} />;
 }
