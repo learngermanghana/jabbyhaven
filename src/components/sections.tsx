@@ -3,6 +3,12 @@ import { menuCatalog } from "@/data/menu-catalog";
 import { StorePromo } from "@/lib/promo";
 import { MenuItem } from "@/types/menu";
 
+type GalleryPreviewItem = {
+  id: string;
+  image: string;
+  name: string;
+};
+
 export function HeroSection() {
   return (
     <section className="card hero">
@@ -84,12 +90,18 @@ export function FeaturedProducts({ items = menuCatalog }: FeaturedProductsProps)
   );
 }
 
-export function GalleryPreview() {
+type GalleryPreviewProps = {
+  items?: GalleryPreviewItem[];
+};
+
+export function GalleryPreview({ items }: GalleryPreviewProps) {
+  const previewItems = (items && items.length ? items : menuCatalog).slice(0, 6);
+
   return (
     <section className="card">
       <h2 className="section-title">Gallery</h2>
       <div className="grid-3">
-        {menuCatalog.map((item) => (
+        {previewItems.map((item) => (
           <img key={item.id} src={item.image} alt={`${item.name} preview`} width={220} height={160} />
         ))}
       </div>
@@ -101,7 +113,6 @@ export function GalleryPreview() {
     </section>
   );
 }
-
 
 const services = [
   "Event catering and buffet services",

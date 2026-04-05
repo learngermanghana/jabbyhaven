@@ -26,8 +26,10 @@ export default function ContactPage() {
       </div>
 
       <article className="card">
-        <h2>Find Us</h2>
-        <p className="lead">Use the map below for directions to Jabby's Haven.</p>
+        <h2>Location</h2>
+        <p className="lead">{siteConfig.address}</p>
+        <p className="lead">{siteConfig.location}</p>
+        <p className="lead">{siteConfig.deliveryNote}</p>
         <a className="button" href="https://maps.app.goo.gl/Aj9W2Ymf3w9sF5g16?g_st=iw" target="_blank" rel="noreferrer">
           Open Map Location
         </a>
