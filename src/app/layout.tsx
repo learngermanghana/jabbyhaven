@@ -3,7 +3,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
-const coreNav = ["Home", "Menu", "Gallery", "About", "Contact"];
+const coreNav = ["Home", "Menu", "Quote", "Gallery", "About", "Contact"];
 
 export const metadata = {
   metadataBase: new URL(siteConfig.baseUrl),
@@ -41,6 +41,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <p>{siteConfig.description}</p>
             <p>{siteConfig.phone}</p>
             <p>{siteConfig.email}</p>
+            <p>{siteConfig.address}</p>
+            <p>{siteConfig.location}</p>
           </div>
         </footer>
       </body>

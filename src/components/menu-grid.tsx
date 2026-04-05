@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { menuCatalog } from "@/data/menu-catalog";
+import { siteConfig } from "@/config/site";
 import { MenuItem } from "@/types/menu";
 
 type MenuGridProps = {
@@ -56,11 +57,22 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
       minimumFractionDigits: 2
     }).format(price);
 
+  const createWhatsAppLink = (item: MenuItem) => {
+    const text = encodeURIComponent(
+      `Hi Jabby's Haven, I want to order ${item.name} (${formatPrice(item.price)}). Is it available?`
+    );
+
+    return `https://wa.me/${siteConfig.whatsapp}?text=${text}`;
+  };
+
   return (
     <section className="page-grid">
       <div className="card">
         <h1>Our Menu</h1>
         <p className="lead">Browse signature meals, sides, and drinks curated for every appetite.</p>
+        <p className="lead">
+          Delivery is available in Accra, and fare is based on your location.
+        </p>
       </div>
 
       <div className="card grid-2">
@@ -105,6 +117,9 @@ export function MenuGrid({ items = menuCatalog }: MenuGridProps) {
                   {typeof item.stockCount === "number" && item.stockCount > 0 ? ` · ${item.stockCount} left` : ""}
                 </p>
                 <p className="lead">{item.description}</p>
+                <a className="button" href={createWhatsAppLink(item)} target="_blank" rel="noreferrer">
+                  Ask about this product / Order now
+                </a>
               </article>
             ))}
           </div>
