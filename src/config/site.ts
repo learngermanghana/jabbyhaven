@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Jabby’s Haven",
   description:
-    "A cozy and authentic dining experience with delicious meals you’ll love.",
+    "Jabby’s Haven is a cozy food spot in A-Lang Kwashieman, Accra, Ghana, serving authentic local and continental meals for dine-in, takeaway, and delivery.",
   phone: "0552516143",
   whatsapp: "0552516143",
   email: "jabbyshaven@gmail.com",

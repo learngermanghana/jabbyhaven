@@ -1,14 +1,33 @@
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
 const coreNav = ["Home", "Menu", "Quote", "Gallery", "About", "Contact"];
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.baseUrl),
-  title: siteConfig.name,
-  description: siteConfig.description
+  title: {
+    default: `${siteConfig.name} | A-Lang Kwashieman, Accra, Ghana`,
+    template: `%s | ${siteConfig.name}`
+  },
+  description: siteConfig.description,
+  keywords: [
+    "restaurant in Accra",
+    "food in Ghana",
+    "Kwashieman restaurant",
+    "A-Lang Kwashieman food",
+    "local and continental meals in Accra",
+    "Jabby's Haven"
+  ],
+  openGraph: {
+    title: `${siteConfig.name} | A-Lang Kwashieman, Accra, Ghana`,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    locale: "en_GH",
+    type: "website"
+  }
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
